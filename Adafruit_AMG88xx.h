@@ -1,0 +1,5 @@
+#ifndef LIB_ADAFRUIT_AMG88XX_H
+#define LIB_ADAFRUIT_AMG88XX_H
+
+
+#endif
