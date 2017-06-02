@@ -166,7 +166,7 @@ void Adafruit_AMG88xx::write(uint8_t reg, uint8_t *buf, uint8_t num)
 float Adafruit_AMG88xx::signedMag12ToFloat(uint16_t val)
 {
 	//take first 11 bits as absolute val
-	uint16_t abs = (val & 0x7FF);
+	uint16_t absVal = (val & 0x7FF);
 	
-	return (val & 0x8000) ? 0 - (float)val : (float)val ;
+	return (val & 0x8000) ? 0 - (float)absVal : (float)absVal ;
 }

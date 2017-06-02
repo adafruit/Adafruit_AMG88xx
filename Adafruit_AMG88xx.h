@@ -42,7 +42,7 @@
 	
 	enum power_modes{
 		AMG88xx_NORMAL_MODE = 0x00,
-		AMG88xx_vSLEEP_MODE = 0x01,
+		AMG88xx_SLEEP_MODE = 0x01,
 		AMG88xx_STAND_BY_60 = 0x20,
 		AMG88xx_STAND_BY_10 = 0x21
 	};
