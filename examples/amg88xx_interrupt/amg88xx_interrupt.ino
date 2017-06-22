@@ -5,7 +5,7 @@
   it will print which pixels triggered the interrupt when one is received.
 
   Designed specifically to work with the Adafruit AMG88 breakout
-  ----> http://www.adafruit.com/products/TODO
+  ----> http://www.adafruit.com/products/3538
 
   These sensors use I2C to communicate. The device's I2C address is 0x69
 
