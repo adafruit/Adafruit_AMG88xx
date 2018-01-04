@@ -30,13 +30,13 @@
    #define TFT_DC   15
    #define SD_CS    2
 #endif
-#ifdef __AVR_ATmega32U4__
-   #define STMPE_CS 6
-   #define TFT_CS   9
-   #define TFT_DC   10
-   #define SD_CS    5
+#ifdef ESP32
+   #define STMPE_CS 32
+   #define TFT_CS   15
+   #define TFT_DC   33
+   #define SD_CS    14
 #endif
-#ifdef ARDUINO_SAMD_FEATHER_M0
+#if defined(__AVR__) || defined(ARDUINO_SAMD_FEATHER_M0)
    #define STMPE_CS 6
    #define TFT_CS   9
    #define TFT_DC   10
@@ -53,6 +53,12 @@
    #define TFT_CS   PA15
    #define STMPE_CS PC7
    #define SD_CS    PC5
+#endif
+#ifdef ARDUINO_FEATHER52
+   #define STMPE_CS 30
+   #define TFT_CS   13
+   #define TFT_DC   11
+   #define SD_CS    27
 #endif
 
 //Comment this out to remove the text overlay
@@ -152,7 +158,5 @@ void loop() {
       tft.print(pixels[i],1);
     #endif
     
-  }
-
-  
+  } 
 }
