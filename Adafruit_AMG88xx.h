@@ -73,6 +73,11 @@
 #define AMG88xx_PIXEL_TEMP_CONVERSION .25
 #define AMG88xx_THERMISTOR_CONVERSION .0625
 
+/**************************************************************************/
+/*! 
+    @brief  Class that stores state and functions for interacting with AMG88xx IR sensor chips
+*/
+/**************************************************************************/
 class Adafruit_AMG88xx {
 	public:
 		//constructors
