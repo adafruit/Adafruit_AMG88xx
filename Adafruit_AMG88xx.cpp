@@ -1,5 +1,14 @@
 #include "Adafruit_AMG88xx.h"
 
+//#define I2C_DEBUG 
+
+#if defined(ESP32)
+// https://github.com/espressif/arduino-esp32/issues/839
+  #define AMG_I2C_CHUNKSIZE 16
+#else
+  #define AMG_I2C_CHUNKSIZE 32
+#endif
+
 /**************************************************************************/
 /*! 
     @brief  Setups the I2C interface and hardware
@@ -224,28 +233,47 @@ void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num)
 	uint8_t value;
 	uint8_t pos = 0;
 	
-	//on arduino we need to read in 32 byte chunks
+	//on arduino we need to read in AMG_I2C_CHUNKSIZE byte chunks
 	while(pos < num){
-		
-		uint8_t read_now = min(32, num - pos);
+		uint8_t read_now = min(AMG_I2C_CHUNKSIZE, num - pos);
 		Wire.beginTransmission((uint8_t)_i2caddr);
 		Wire.write((uint8_t)reg + pos);
 		Wire.endTransmission();
 		Wire.requestFrom((uint8_t)_i2caddr, read_now);
-		
+
+#ifdef I2C_DEBUG
+		Serial.print("[$"); Serial.print(reg + pos, HEX); Serial.print("] -> ");
+#endif
 		for(int i=0; i<read_now; i++){
 			buf[pos] = Wire.read();
+#ifdef I2C_DEBUG
+			Serial.print("0x"); Serial.print(buf[pos], HEX); Serial.print(", ");
+#endif
 			pos++;
 		}
+#ifdef I2C_DEBUG
+		Serial.println();
+#endif
 	}
 }
 
 void Adafruit_AMG88xx::write(uint8_t reg, uint8_t *buf, uint8_t num)
 {
+#ifdef I2C_DEBUG
+		Serial.print("[$"); Serial.print(reg, HEX); Serial.print("] <- ");
+#endif
 	Wire.beginTransmission((uint8_t)_i2caddr);
 	Wire.write((uint8_t)reg);
-	Wire.write((uint8_t *)buf, num);
+	for (int i=0; i<num; i++) {
+	  Wire.write(buf[i]);
+#ifdef I2C_DEBUG
+	  Serial.print("0x"); Serial.print(buf[i], HEX); Serial.print(", ");
+#endif
+	}
 	Wire.endTransmission();
+#ifdef I2C_DEBUG
+	Serial.println();
+#endif
 }
 
 /**************************************************************************/
