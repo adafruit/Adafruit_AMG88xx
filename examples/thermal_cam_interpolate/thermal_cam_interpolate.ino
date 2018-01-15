@@ -43,7 +43,7 @@
    #define TFT_DC   10
    #define SD_CS    5
 #endif
-#ifdef ARDUINO_SAMD_FEATHER_M0
+#if defined(__AVR__) || defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_SAM)
    #define STMPE_CS 6
    #define TFT_CS   9
    #define TFT_DC   10
@@ -68,11 +68,6 @@
    #define SD_CS    27
 #endif
 #ifdef __SAMD51__
-   #define STMPE_CS 6
-   #define TFT_CS   9
-   #define TFT_DC   10
-   #define SD_CS    5
-   
   Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, MOSI, SCK);
 #else
   Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);

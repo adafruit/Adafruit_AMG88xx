@@ -36,7 +36,7 @@
    #define TFT_DC   33
    #define SD_CS    14
 #endif
-#if defined(__AVR__) || defined(ARDUINO_SAMD_FEATHER_M0)
+#if defined(__AVR__) || defined(ARDUINO_ARCH_SAMD) || defined(ARDUINO_ARCH_SAM)
    #define STMPE_CS 6
    #define TFT_CS   9
    #define TFT_DC   10
