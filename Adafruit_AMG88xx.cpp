@@ -140,7 +140,7 @@ void Adafruit_AMG88xx::setInterruptMode(uint8_t mode)
 /**************************************************************************/
 void Adafruit_AMG88xx::getInterrupt(uint8_t *buf, uint8_t size)
 {
-	uint8_t bytesToRead = min(size, 8);
+	uint8_t bytesToRead = min(size, (uint8_t)8);
 	
 	this->read(AMG88xx_INT_OFFSET, buf, bytesToRead);
 }
@@ -183,7 +183,7 @@ void Adafruit_AMG88xx::readPixels(float *buf, uint8_t size)
 {
 	uint16_t recast;
 	float converted;
-	uint8_t bytesToRead = min(size << 1, AMG88xx_PIXEL_ARRAY_SIZE << 1);
+	uint8_t bytesToRead = min((uint8_t)(size << 1), (uint8_t)(AMG88xx_PIXEL_ARRAY_SIZE << 1));
 	uint8_t rawArray[bytesToRead];
 	this->read(AMG88xx_PIXEL_OFFSET, rawArray, bytesToRead);
 	
@@ -235,7 +235,7 @@ void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num)
 	
 	//on arduino we need to read in AMG_I2C_CHUNKSIZE byte chunks
 	while(pos < num){
-		uint8_t read_now = min(AMG_I2C_CHUNKSIZE, num - pos);
+		uint8_t read_now = min((uint8_t)AMG_I2C_CHUNKSIZE, (uint8_t)(num - pos));
 		Wire.beginTransmission((uint8_t)_i2caddr);
 		Wire.write((uint8_t)reg + pos);
 		Wire.endTransmission();
