@@ -147,6 +147,7 @@ void setup() {
   }
     
   Serial.println("-- Thermal Camera Test --");
+  delay(100); // let sensor boot up
 }
 
 void loop() {
