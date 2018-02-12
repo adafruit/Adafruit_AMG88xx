@@ -37,6 +37,8 @@ bool Adafruit_AMG88xx::begin(uint8_t addr)
 	_fpsc.FPS = AMG88xx_FPS_10;
 	write8(AMG88xx_FPSC, _fpsc.get());
 
+	delay(100);
+
 	return true;
 }
 
