@@ -118,6 +118,10 @@ unsigned long delayTime;
 #define AMG_COLS 8
 #define AMG_ROWS 8
 float pixels[AMG_COLS * AMG_ROWS];
+int currmin, currmax;
+float minavg, maxavg;
+float alpha, oneminusalpha;  // Exponential avg decay value, 0 < alpha < 1, smaller alpha = slower response
+int offset; // Min and max offset from low/high average
 
 #define INTERPOLATED_COLS 24
 #define INTERPOLATED_ROWS 24
@@ -133,6 +137,16 @@ void interpolate_image(float *src, uint8_t src_rows, uint8_t src_cols,
                        float *dest, uint8_t dest_rows, uint8_t dest_cols);
 void setup() {
   delay(500);
+
+  // Set initial min and max
+  currmin = MINTEMP;
+  currmax = MAXTEMP;
+  minavg = MINTEMP;
+  maxavg = MAXTEMP;
+  alpha = 0.05;
+  oneminusalpha = 1.0 - alpha;  // Avoid calculating every time we need it
+  offset = 0;
+  
   Serial.begin(115200);  
   Serial.println("\n\nAMG88xx Interpolated Thermal Camera!");
 
@@ -153,25 +167,48 @@ void loop() {
   //read all the pixels
   amg.readPixels(pixels);
 
-  Serial.print("[");
+  float framemin = pixels[0]; // An arbitrary starting point
+  float framemax = pixels[0];
+  
+  //Serial.print("[");
   for(int i=1; i<=AMG88xx_PIXEL_ARRAY_SIZE; i++){
-    Serial.print(pixels[i-1]);
-    Serial.print(", ");
-    if( i%8 == 0 ) Serial.println();
+    float pix = pixels[i-1];
+    if( pix < framemin ) framemin = pix;
+    if( pix > framemax ) framemax = pix;
+    //Serial.print(pix);
+    //Serial.print(", ");
+    //if( i%8 == 0 ) Serial.println();
   }
-  Serial.println("]");
-  Serial.println();
+  //Serial.println("]");
+  //Serial.println();
+
+  minavg = alpha * framemin + oneminusalpha * minavg;
+  maxavg = alpha * framemax + oneminusalpha * maxavg;
+  currmin = floor(minavg) - offset;
+  currmax = ceil(maxavg) + offset;
+  Serial.print("min=");
+  Serial.print(currmin);
+  Serial.print(", max=");
+  Serial.println(currmax);
 
   float dest_2d[INTERPOLATED_ROWS * INTERPOLATED_COLS];
 
   int32_t t = millis();
   interpolate_image(pixels, AMG_ROWS, AMG_COLS, dest_2d, INTERPOLATED_ROWS, INTERPOLATED_COLS);
-  Serial.print("Interpolation took "); Serial.print(millis()-t); Serial.println(" ms");
+  //Serial.print("Interpolation took "); Serial.print(millis()-t); Serial.println(" ms");
 
   uint16_t boxsize = min(tft.width() / INTERPOLATED_COLS, tft.height() / INTERPOLATED_COLS);
   
   drawpixels(dest_2d, INTERPOLATED_ROWS, INTERPOLATED_COLS, boxsize, boxsize, false);
-
+  tft.setCursor(0, 0);
+  tft.setTextColor(ILI9341_WHITE);  tft.setTextSize(1);
+  tft.fillRect(0, 0, 20, 8, ILI9341_BLACK);
+  tft.fillRect(20, 0, 8, 8, camColors[255]);
+  tft.print(currmax);
+  tft.setCursor(0, tft.height() - 8);
+  tft.fillRect(0, tft.height() - 8, 20, 8, ILI9341_BLACK);
+  tft.fillRect(20, tft.height() - 8, 8, 8, camColors[0]);
+  tft.print(currmin);
   //delay(50);
 }
 
@@ -180,11 +217,11 @@ void drawpixels(float *p, uint8_t rows, uint8_t cols, uint8_t boxWidth, uint8_t 
   for (int y=0; y<rows; y++) {
     for (int x=0; x<cols; x++) {
       float val = get_point(p, rows, cols, x, y);
-      if(val >= MAXTEMP) colorTemp = MAXTEMP;
-      else if(val <= MINTEMP) colorTemp = MINTEMP;
+      if(val >= currmax) colorTemp = currmax;
+      else if(val <= currmin) colorTemp = currmin;
       else colorTemp = val;
       
-      uint8_t colorIndex = map(colorTemp, MINTEMP, MAXTEMP, 0, 255);
+      uint8_t colorIndex = map(colorTemp, currmin, currmax, 0, 255);
       colorIndex = constrain(colorIndex, 0, 255);
       //draw the pixels!
       uint16_t color;
