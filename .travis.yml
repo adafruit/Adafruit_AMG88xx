@@ -13,7 +13,7 @@ env:
 #    - DOXYFILE: $TRAVIS_BUILD_DIR/Doxyfile
 
 before_install:
-   - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
+   - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/dm-m4/install.sh)
 
 install:
    - arduino --install-library "Adafruit ST7735 Library","Adafruit GFX Library","Adafruit ILI9341"
