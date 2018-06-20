@@ -19,7 +19,7 @@ install:
    - arduino --install-library "Adafruit ST7735 Library","Adafruit GFX Library","Adafruit ILI9341"
 
 script:
-   - build_main_platforms
+   - build_io_platforms
 
 # Generate and deploy documentation
 after_success:
