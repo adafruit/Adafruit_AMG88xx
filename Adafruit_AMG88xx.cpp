@@ -193,7 +193,7 @@ void Adafruit_AMG88xx::readPixels(float *buf, uint8_t size)
 		uint8_t pos = i << 1;
 		recast = ((uint16_t)rawArray[pos + 1] << 8) | ((uint16_t)rawArray[pos]);
 		
-		converted = signedMag12ToFloat(recast) * AMG88xx_PIXEL_TEMP_CONVERSION;
+		converted = twosComplementMag12ToFloat(recast) * AMG88xx_PIXEL_TEMP_CONVERSION;
 		buf[i] = converted;
 	}
 }
@@ -291,4 +291,16 @@ float Adafruit_AMG88xx::signedMag12ToFloat(uint16_t val)
 	uint16_t absVal = (val & 0x7FF);
 	
 	return (val & 0x8000) ? 0 - (float)absVal : (float)absVal ;
+}
+
+/**************************************************************************/
+/*! 
+    @brief  convert a 12-bit two's complement value to a floating point number
+    @param  val the 12-bit two's complement value to be converted
+    @returns the converted floating point value
+*/
+/**************************************************************************/
+float Adafruit_AMG88xx::twosComplementMag12ToFloat(uint16_t val)
+{
+	return (val & 0x800) ? (float)(val - 0x1000) : (float)val ;
 }
