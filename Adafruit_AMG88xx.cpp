@@ -170,7 +170,7 @@ float Adafruit_AMG88xx::readThermistor()
 	this->read(AMG88xx_TTHL, raw, 2);
 	uint16_t recast = ((uint16_t)raw[1] << 8) | ((uint16_t)raw[0]);
 
-	return signedMag12ToFloat(recast) * AMG88xx_THERMISTOR_CONVERSION;
+	return int12ToFloat(recast) * AMG88xx_THERMISTOR_CONVERSION;
 }
 
 /**************************************************************************/
@@ -193,7 +193,7 @@ void Adafruit_AMG88xx::readPixels(float *buf, uint8_t size)
 		uint8_t pos = i << 1;
 		recast = ((uint16_t)rawArray[pos + 1] << 8) | ((uint16_t)rawArray[pos]);
 		
-		converted = signedMag12ToFloat(recast) * AMG88xx_PIXEL_TEMP_CONVERSION;
+		converted = int12ToFloat(recast) * AMG88xx_PIXEL_TEMP_CONVERSION;
 		buf[i] = converted;
 	}
 }
@@ -232,7 +232,6 @@ void Adafruit_AMG88xx::_i2c_init()
 
 void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num)
 {
-	uint8_t value;
 	uint8_t pos = 0;
 	
 	//on arduino we need to read in AMG_I2C_CHUNKSIZE byte chunks
@@ -280,15 +279,13 @@ void Adafruit_AMG88xx::write(uint8_t reg, uint8_t *buf, uint8_t num)
 
 /**************************************************************************/
 /*! 
-    @brief  convert a 12-bit signed magnitude value to a floating point number
-    @param  val the 12-bit signed magnitude value to be converted
+    @brief  convert a 12-bit integer two's complement value to a floating point number
+    @param  val the 12-bit integer  two's complement value to be converted
     @returns the converted floating point value
 */
 /**************************************************************************/
-float Adafruit_AMG88xx::signedMag12ToFloat(uint16_t val)
+float Adafruit_AMG88xx::int12ToFloat(uint16_t val)
 {
-	//take first 11 bits as absolute val
-	uint16_t absVal = (val & 0x7FF);
-	
-	return (val & 0x8000) ? 0 - (float)absVal : (float)absVal ;
+	int16_t sVal = (val << 4); //shift to left so that sign bit of 12 bit integer number is placed on sign bit of 16 bit signed integer number
+	return sVal >> 4; //shift back the signed number, return converts to float
 }

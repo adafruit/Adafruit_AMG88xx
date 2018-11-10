@@ -114,7 +114,7 @@ class Adafruit_AMG88xx {
 		void write(uint8_t reg, uint8_t *buf, uint8_t num);
 		void _i2c_init();
 		
-		float signedMag12ToFloat(uint16_t val);
+		float int12ToFloat(uint16_t val);
 		
 		 // The power control register
         struct pctl {
