@@ -290,7 +290,7 @@ float Adafruit_AMG88xx::signedMag12ToFloat(uint16_t val)
 	//take first 11 bits as absolute val
 	uint16_t absVal = (val & 0x7FF);
 	
-	return (val & 0x8000) ? 0 - (float)absVal : (float)absVal ;
+	return (val & 0x800) ? 0 - (float)absVal : (float)absVal ;
 }
 
 /**************************************************************************/
