@@ -188,7 +188,7 @@ class Adafruit_AMG88xx {
 			uint8_t OVF_THS : 1;
 			
 			uint8_t get(){
-				return ( (OVF_THS << 3) | (OVF_IRS << 2) | (INTF << 1) ) & 0x07;
+				return ( (OVF_THS << 3) | (OVF_IRS << 2) | (INTF << 1) ) & 0x0E;
 			}
 		};
 		stat _stat;
@@ -206,7 +206,7 @@ class Adafruit_AMG88xx {
 			uint8_t OVT_CLR : 1;
 			
 			uint8_t get(){
-				return ((OVT_CLR << 3) | (OVS_CLR << 2) | (INTCLR << 1)) & 0x07;
+				return ((OVT_CLR << 3) | (OVS_CLR << 2) | (INTCLR << 1)) & 0x0E;
 			}
 		};
 		sclr _sclr;
