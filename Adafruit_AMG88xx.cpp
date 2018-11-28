@@ -43,6 +43,21 @@ bool Adafruit_AMG88xx::begin(uint8_t addr)
 
 /**************************************************************************/
 /*! 
+    @brief  Read current power mode
+    @returns current power mode state
+      // 0x00 = Normal Mode
+      // 0x01 = Sleep Mode
+      // 0x20 = Stand-by mode (60 sec intermittence)
+      // 0x21 = Stand-by mode (10 sec intermittence))
+*/
+/**************************************************************************/
+void Adafruit_AMG88xx::getPowerMode()
+{
+  return _pctl.get();
+}
+
+/**************************************************************************/
+/*! 
     @brief  Set power mode to normal.
 */
 /**************************************************************************/
