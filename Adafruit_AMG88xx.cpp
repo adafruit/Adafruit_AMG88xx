@@ -51,7 +51,7 @@ bool Adafruit_AMG88xx::begin(uint8_t addr)
       // 0x21 = Stand-by mode (10 sec intermittence))
 */
 /**************************************************************************/
-void Adafruit_AMG88xx::getPowerMode()
+uint8_t Adafruit_AMG88xx::getPowerMode()
 {
   return _pctl.get();
 }
