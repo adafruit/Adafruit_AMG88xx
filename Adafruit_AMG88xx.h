@@ -88,6 +88,11 @@ class Adafruit_AMG88xx {
 		
 		void readPixels(float *buf, uint8_t size = AMG88xx_PIXEL_ARRAY_SIZE);
 		float readThermistor();
+
+		void setNormalMode();
+		void setSleepMode();
+		void set60sStandbyMode();
+		void set10sStandbyMode();
 		
 		void setMovingAverageMode(bool mode);
 		
