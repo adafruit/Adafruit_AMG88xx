@@ -22,9 +22,8 @@ bool Adafruit_AMG88xx::begin(uint8_t addr)
 	
 	_i2c_init();
 	
-	//enter normal mode
-	_pctl.PCTL = AMG88xx_NORMAL_MODE;
-	write8(AMG88xx_PCTL, _pctl.get());
+  //enter normal mode
+	setNormalMode();
 	
 	//software reset
 	_rst.RST = AMG88xx_INITIAL_RESET;
@@ -40,6 +39,65 @@ bool Adafruit_AMG88xx::begin(uint8_t addr)
 	delay(100);
 
 	return true;
+}
+
+/**************************************************************************/
+/*! 
+    @brief  Read current power mode
+    @returns current power mode state
+      // 0x00 = Normal Mode
+      // 0x01 = Sleep Mode
+      // 0x20 = Stand-by mode (60 sec intermittence)
+      // 0x21 = Stand-by mode (10 sec intermittence))
+*/
+/**************************************************************************/
+uint8_t Adafruit_AMG88xx::getPowerMode()
+{
+  return _pctl.get();
+}
+
+/**************************************************************************/
+/*! 
+    @brief  Set power mode to normal.
+*/
+/**************************************************************************/
+void Adafruit_AMG88xx::setNormalMode()
+{
+  _pctl.PCTL = AMG88xx_NORMAL_MODE;
+  write8(AMG88xx_PCTL, _pctl.get());
+}
+
+/**************************************************************************/
+/*! 
+    @brief  Set power mode to sleep, temperature register is not updated.
+*/
+/**************************************************************************/
+void Adafruit_AMG88xx::setSleepMode()
+{
+  _pctl.PCTL = AMG88xx_SLEEP_MODE;
+  write8(AMG88xx_PCTL, _pctl.get());
+}
+
+/**************************************************************************/
+/*! 
+    @brief  Set power mode to standby, temperature register is updated every 60 seconds.
+*/
+/**************************************************************************/
+void Adafruit_AMG88xx::set60sStandbyMode()
+{
+  _pctl.PCTL = AMG88xx_STAND_BY_60;
+  write8(AMG88xx_PCTL, _pctl.get());
+}
+
+/**************************************************************************/
+/*! 
+    @brief  Set power mode to standby, temperature register is updated every 10 seconds.
+*/
+/**************************************************************************/
+void Adafruit_AMG88xx::set10sStandbyMode()
+{
+  _pctl.PCTL = AMG88xx_STAND_BY_10;
+  write8(AMG88xx_PCTL, _pctl.get());
 }
 
 /**************************************************************************/
