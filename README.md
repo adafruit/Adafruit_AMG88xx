@@ -1,4 +1,4 @@
-# Adafruit AMG88xx Library [![Build Status](https://travis-ci.org/adafruit/Adafruit_AMG88xx.svg?branch=master)](https://travis-ci.org/adafruit/Adafruit_AMG88xx)
+# Adafruit AMG88xx Library [![Build Status](https://github.com/adafruit/Adafruit_AMG88xx/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_AMG88xx/actions)
 
 <img src="https://cdn-shop.adafruit.com/970x728/3538-01.jpg" height="300"/>
 
