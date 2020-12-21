@@ -139,12 +139,12 @@ void loop() {
   
   for(int i=0; i<AMG88xx_PIXEL_ARRAY_SIZE; i++){
 
-    int colorTemp;
+    float colorTemp; // May have to be moved to global?
     if(pixels[i] >= MAXTEMP) colorTemp = MAXTEMP;
     else if(pixels[i] <= MINTEMP) colorTemp = MINTEMP;
     else colorTemp = pixels[i];
     
-    uint8_t colorIndex = map(colorTemp, MINTEMP, MAXTEMP, 0, 255);
+    uint8_t colorIndex = map(colorTemp * 100, MINTEMP * 100, MAXTEMP * 100, 0, 255); // move decimal point of colorTemp 2 places to the right, otherwise colors are only mapped to full degrees and not points
     
     colorIndex = constrain(colorIndex, 0, 255);
     //draw the pixels!
