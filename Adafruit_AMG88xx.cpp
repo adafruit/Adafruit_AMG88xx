@@ -17,10 +17,10 @@
     @returns True if device is set up, false on any failure
 */
 /**************************************************************************/
-bool Adafruit_AMG88xx::begin(uint8_t addr) {
-  _i2caddr = addr;
-
-  _i2c_init();
+bool Adafruit_AMG88xx::begin(uint8_t addr, TwoWire *theWire) {
+  i2c_dev = new Adafruit_I2CDevice(addr, theWire);
+  if (!i2c_dev->begin())
+    return false;
 
   // enter normal mode
   _pctl.PCTL = AMG88xx_NORMAL_MODE;
@@ -219,27 +219,25 @@ uint8_t Adafruit_AMG88xx::read8(byte reg) {
   return ret;
 }
 
-void Adafruit_AMG88xx::_i2c_init() { Wire.begin(); }
-
 void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
-  uint8_t value;
   uint8_t pos = 0;
+  uint8_t buffer[1];
+  uint8_t read_buffer[AMG_I2C_CHUNKSIZE];
 
+  i2c_dev->write(buffer, 1);
   // on arduino we need to read in AMG_I2C_CHUNKSIZE byte chunks
   while (pos < num) {
-    uint8_t read_now = min((uint8_t)AMG_I2C_CHUNKSIZE, (uint8_t)(num - pos));
-    Wire.beginTransmission((uint8_t)_i2caddr);
-    Wire.write((uint8_t)reg + pos);
-    Wire.endTransmission();
-    Wire.requestFrom((uint8_t)_i2caddr, read_now);
-
+    buffer[0] = reg + pos;
+    i2c_dev->write(buffer, 1);
 #ifdef I2C_DEBUG
     Serial.print("[$");
     Serial.print(reg + pos, HEX);
     Serial.print("] -> ");
 #endif
+    uint8_t read_now = min((uint8_t)AMG_I2C_CHUNKSIZE, (uint8_t)(num - pos));
+    i2c_dev->read(read_buffer, read_now);
     for (int i = 0; i < read_now; i++) {
-      buf[pos] = Wire.read();
+      buf[pos] = read_buffer[i];
 #ifdef I2C_DEBUG
       Serial.print("0x");
       Serial.print(buf[pos], HEX);
@@ -254,25 +252,22 @@ void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
 }
 
 void Adafruit_AMG88xx::write(uint8_t reg, uint8_t *buf, uint8_t num) {
+  uint8_t buffer[num + 1];
+  buffer[0] = reg;
 #ifdef I2C_DEBUG
   Serial.print("[$");
   Serial.print(reg, HEX);
   Serial.print("] <- ");
 #endif
-  Wire.beginTransmission((uint8_t)_i2caddr);
-  Wire.write((uint8_t)reg);
   for (int i = 0; i < num; i++) {
-    Wire.write(buf[i]);
+    buffer[i + 1] = buf[i];
 #ifdef I2C_DEBUG
     Serial.print("0x");
     Serial.print(buf[i], HEX);
     Serial.print(", ");
 #endif
   }
-  Wire.endTransmission();
-#ifdef I2C_DEBUG
-  Serial.println();
-#endif
+  i2c_dev->write(buffer, num + 1);
 }
 
 /**************************************************************************/
