@@ -2,13 +2,6 @@
 
 //#define I2C_DEBUG
 
-#if defined(ESP32)
-// https://github.com/espressif/arduino-esp32/issues/839
-#define AMG_I2C_CHUNKSIZE 16
-#else
-#define AMG_I2C_CHUNKSIZE 32
-#endif
-
 /**************************************************************************/
 /*!
     @brief  Setups the I2C interface and hardware
@@ -222,10 +215,10 @@ uint8_t Adafruit_AMG88xx::read8(byte reg) {
 void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
   uint8_t pos = 0;
   uint8_t buffer[1];
-  uint8_t read_buffer[AMG_I2C_CHUNKSIZE];
+  uint8_t chuckSize = uint8_t(i2c_dev->maxBufferSize());
+  uint8_t read_buffer[chuckSize];
 
-  i2c_dev->write(buffer, 1);
-  // on arduino we need to read in AMG_I2C_CHUNKSIZE byte chunks
+  // on arduino we need to read in chunks
   while (pos < num) {
     buffer[0] = reg + pos;
     i2c_dev->write(buffer, 1);
@@ -234,7 +227,7 @@ void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
     Serial.print(reg + pos, HEX);
     Serial.print("] -> ");
 #endif
-    uint8_t read_now = min((uint8_t)AMG_I2C_CHUNKSIZE, (uint8_t)(num - pos));
+    uint8_t read_now = min(chuckSize, (uint8_t)(num - pos));
     i2c_dev->read(read_buffer, read_now);
     for (int i = 0; i < read_now; i++) {
       buf[pos] = read_buffer[i];
@@ -252,22 +245,18 @@ void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
 }
 
 void Adafruit_AMG88xx::write(uint8_t reg, uint8_t *buf, uint8_t num) {
-  uint8_t buffer[num + 1];
-  buffer[0] = reg;
+  uint8_t prefix[1] = {reg};
 #ifdef I2C_DEBUG
   Serial.print("[$");
   Serial.print(reg, HEX);
   Serial.print("] <- ");
-#endif
   for (int i = 0; i < num; i++) {
-    buffer[i + 1] = buf[i];
-#ifdef I2C_DEBUG
     Serial.print("0x");
     Serial.print(buf[i], HEX);
     Serial.print(", ");
-#endif
   }
-  i2c_dev->write(buffer, num + 1);
+#endif
+  i2c_dev->write(buf, num, true, prefix, 1);
 }
 
 /**************************************************************************/
