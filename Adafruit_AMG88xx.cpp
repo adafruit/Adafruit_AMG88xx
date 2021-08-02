@@ -7,6 +7,7 @@
     @brief  Setups the I2C interface and hardware
     @param  addr Optional I2C address the sensor can be found on. Default is
    0x69
+    @param  theWire the I2C object to use, defaults to &Wire
     @returns True if device is set up, false on any failure
 */
 /**************************************************************************/
