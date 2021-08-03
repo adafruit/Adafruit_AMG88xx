@@ -1,7 +1,5 @@
 #include "Adafruit_AMG88xx.h"
 
-//#define I2C_DEBUG
-
 /**************************************************************************/
 /*!
     @brief  Setups the I2C interface and hardware
@@ -223,40 +221,17 @@ void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
   while (pos < num) {
     buffer[0] = reg + pos;
     i2c_dev->write(buffer, 1);
-#ifdef I2C_DEBUG
-    Serial.print("[$");
-    Serial.print(reg + pos, HEX);
-    Serial.print("] -> ");
-#endif
     uint8_t read_now = min(chuckSize, (uint8_t)(num - pos));
     i2c_dev->read(read_buffer, read_now);
     for (int i = 0; i < read_now; i++) {
       buf[pos] = read_buffer[i];
-#ifdef I2C_DEBUG
-      Serial.print("0x");
-      Serial.print(buf[pos], HEX);
-      Serial.print(", ");
-#endif
       pos++;
     }
-#ifdef I2C_DEBUG
-    Serial.println();
-#endif
   }
 }
 
 void Adafruit_AMG88xx::write(uint8_t reg, uint8_t *buf, uint8_t num) {
   uint8_t prefix[1] = {reg};
-#ifdef I2C_DEBUG
-  Serial.print("[$");
-  Serial.print(reg, HEX);
-  Serial.print("] <- ");
-  for (int i = 0; i < num; i++) {
-    Serial.print("0x");
-    Serial.print(buf[i], HEX);
-    Serial.print(", ");
-  }
-#endif
   i2c_dev->write(buf, num, true, prefix, 1);
 }
 
