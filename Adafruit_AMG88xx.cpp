@@ -212,20 +212,26 @@ uint8_t Adafruit_AMG88xx::read8(byte reg) {
 }
 
 void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
-  uint8_t pos = 0;
   uint8_t buffer[1];
-  size_t chuckSize = i2c_dev->maxBufferSize();
-  uint8_t read_buffer[chuckSize];
-
-  // on arduino we need to read in chunks
-  while (pos < num) {
-    buffer[0] = reg + pos;
+  size_t chunckSize = i2c_dev->maxBufferSize();
+  if (chunkSize > num) {
+    // can just read
+    buffer[0] = reg;
     i2c_dev->write(buffer, 1);
-    size_t read_now = min(chuckSize, num - pos);
-    i2c_dev->read(read_buffer, read_now);
-    for (size_t i = 0; i < read_now; i++) {
-      buf[pos] = read_buffer[i];
-      pos++;
+    i2c_dev->read(buf, num);
+  } else {
+    // must read in chunks
+    uint8_t pos = 0;
+    uint8_t read_buffer[chunkSize];
+    while (pos < num) {
+      buffer[0] = reg + pos;
+      i2c_dev->write(buffer, 1);
+      uint8_t read_now = min(uint8_t(chunckSize), (uint8_t)(num - pos));
+      i2c_dev->read(read_buffer, read_now);
+      for (uint8_t i = 0; i < read_now; i++) {
+        buf[pos] = read_buffer[i];
+        pos++;
+      }
     }
   }
 }
