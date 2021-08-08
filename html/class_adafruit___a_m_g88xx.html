@@ -74,9 +74,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a604690e3f0ab56b884775989a9b7d423"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#a604690e3f0ab56b884775989a9b7d423">begin</a> (uint8_t addr=AMG88xx_ADDRESS)</td></tr>
-<tr class="memdesc:a604690e3f0ab56b884775989a9b7d423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setups the I2C interface and hardware.  <a href="#a604690e3f0ab56b884775989a9b7d423">More...</a><br /></td></tr>
-<tr class="separator:a604690e3f0ab56b884775989a9b7d423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afab9776ca718c6e82488d1bab4834a0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#afab9776ca718c6e82488d1bab4834a0f">begin</a> (uint8_t addr=AMG88xx_ADDRESS, TwoWire *theWire=&amp;Wire)</td></tr>
+<tr class="memdesc:afab9776ca718c6e82488d1bab4834a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setups the I2C interface and hardware.  <a href="#afab9776ca718c6e82488d1bab4834a0f">More...</a><br /></td></tr>
+<tr class="separator:afab9776ca718c6e82488d1bab4834a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a465430ad61264933c69d1587bcf847c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#a465430ad61264933c69d1587bcf847c1">readPixels</a> (float *buf, uint8_t size=AMG88xx_PIXEL_ARRAY_SIZE)</td></tr>
 <tr class="memdesc:a465430ad61264933c69d1587bcf847c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Infrared sensor values.  <a href="#a465430ad61264933c69d1587bcf847c1">More...</a><br /></td></tr>
 <tr class="separator:a465430ad61264933c69d1587bcf847c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,8 +114,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that stores state and functions for interacting with AMG88xx IR sensor chips. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a604690e3f0ab56b884775989a9b7d423"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a604690e3f0ab56b884775989a9b7d423">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="afab9776ca718c6e82488d1bab4834a0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afab9776ca718c6e82488d1bab4834a0f">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -124,8 +124,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">bool Adafruit_AMG88xx::begin </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>addr</em> = <code>AMG88xx_ADDRESS</code></td><td>)</td>
+          <td class="paramname"><em>addr</em> = <code>AMG88xx_ADDRESS</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">TwoWire *&#160;</td>
+          <td class="paramname"><em>theWire</em> = <code>&amp;Wire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -134,6 +144,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>Optional I2C address the sensor can be found on. Default is 0x69 </td></tr>
+    <tr><td class="paramname">theWire</td><td>the I2C object to use, defaults to &amp;Wire </td></tr>
   </table>
   </dd>
 </dl>
