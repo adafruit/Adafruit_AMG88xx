@@ -7,7 +7,7 @@
 #include "WProgram.h"
 #endif
 
-#include <Wire.h>
+#include <Adafruit_I2CDevice.h>
 
 /*=========================================================================
     I2C ADDRESS/BITS
@@ -72,7 +72,7 @@ public:
   Adafruit_AMG88xx(void){};
   ~Adafruit_AMG88xx(void){};
 
-  bool begin(uint8_t addr = AMG88xx_ADDRESS);
+  bool begin(uint8_t addr = AMG88xx_ADDRESS, TwoWire *theWire = &Wire);
 
   void readPixels(float *buf, uint8_t size = AMG88xx_PIXEL_ARRAY_SIZE);
   float readThermistor();
@@ -92,7 +92,7 @@ public:
   void setInterruptLevels(float high, float low, float hysteresis);
 
 private:
-  uint8_t _i2caddr;
+  Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
 
   void write8(byte reg, byte value);
   void write16(byte reg, uint16_t value);
@@ -100,7 +100,6 @@ private:
 
   void read(uint8_t reg, uint8_t *buf, uint8_t num);
   void write(uint8_t reg, uint8_t *buf, uint8_t num);
-  void _i2c_init();
 
   float signedMag12ToFloat(uint16_t val);
   float int12ToFloat(uint16_t val);
