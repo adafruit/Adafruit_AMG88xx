@@ -1,5 +1,10 @@
 #include "Adafruit_AMG88xx.h"
 
+Adafruit_AMG88xx::~Adafruit_AMG88xx(void) {
+  if (i2c_dev)
+    delete i2c_dev;
+}
+
 /**************************************************************************/
 /*!
     @brief  Setups the I2C interface and hardware
@@ -10,6 +15,8 @@
 */
 /**************************************************************************/
 bool Adafruit_AMG88xx::begin(uint8_t addr, TwoWire *theWire) {
+  if (i2c_dev)
+    delete i2c_dev;
   i2c_dev = new Adafruit_I2CDevice(addr, theWire);
   if (!i2c_dev->begin())
     return false;
@@ -212,28 +219,8 @@ uint8_t Adafruit_AMG88xx::read8(byte reg) {
 }
 
 void Adafruit_AMG88xx::read(uint8_t reg, uint8_t *buf, uint8_t num) {
-  uint8_t buffer[1];
-  size_t chunkSize = i2c_dev->maxBufferSize();
-  if (chunkSize > num) {
-    // can just read
-    buffer[0] = reg;
-    i2c_dev->write(buffer, 1);
-    i2c_dev->read(buf, num);
-  } else {
-    // must read in chunks
-    uint8_t pos = 0;
-    uint8_t read_buffer[chunkSize];
-    while (pos < num) {
-      buffer[0] = reg + pos;
-      i2c_dev->write(buffer, 1);
-      uint8_t read_now = min(uint8_t(chunkSize), (uint8_t)(num - pos));
-      i2c_dev->read(read_buffer, read_now);
-      for (uint8_t i = 0; i < read_now; i++) {
-        buf[pos] = read_buffer[i];
-        pos++;
-      }
-    }
-  }
+  uint8_t buffer[1] = {reg};
+  i2c_dev->write_then_read(buffer, 1, buf, num);
 }
 
 void Adafruit_AMG88xx::write(uint8_t reg, uint8_t *buf, uint8_t num) {
