@@ -70,7 +70,7 @@ class Adafruit_AMG88xx {
 public:
   // constructors
   Adafruit_AMG88xx(void){};
-  ~Adafruit_AMG88xx(void){};
+  ~Adafruit_AMG88xx(void);
 
   bool begin(uint8_t addr = AMG88xx_ADDRESS, TwoWire *theWire = &Wire);
 
