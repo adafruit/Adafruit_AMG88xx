@@ -102,7 +102,7 @@ void loop() {
   amg.readPixels(pixels);
 
   for(int i=0; i<AMG88xx_PIXEL_ARRAY_SIZE; i++){
-    uint8_t colorIndex = map(pixels[i], MINTEMP, MAXTEMP, 0, 255);
+    uint8_t colorIndex = map(pixels[i] * 100, MINTEMP * 100, MAXTEMP * 100, 0, 255); //move decimal point of pixels[] two places to the right, otherwise colors are only mapped to full degrees and not points.
     colorIndex = constrain(colorIndex, 0, 255);
 
     //draw the pixels!

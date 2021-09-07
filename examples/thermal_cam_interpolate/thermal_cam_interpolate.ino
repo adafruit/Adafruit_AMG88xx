@@ -180,7 +180,7 @@ void loop() {
 }
 
 void drawpixels(float *p, uint8_t rows, uint8_t cols, uint8_t boxWidth, uint8_t boxHeight, boolean showVal) {
-  int colorTemp;
+  float colorTemp;  // changed to float
   for (int y=0; y<rows; y++) {
     for (int x=0; x<cols; x++) {
       float val = get_point(p, rows, cols, x, y);
@@ -188,7 +188,7 @@ void drawpixels(float *p, uint8_t rows, uint8_t cols, uint8_t boxWidth, uint8_t 
       else if(val <= MINTEMP) colorTemp = MINTEMP;
       else colorTemp = val;
       
-      uint8_t colorIndex = map(colorTemp, MINTEMP, MAXTEMP, 0, 255);
+      uint8_t colorIndex = map(colorTemp * 100, MINTEMP * 100, MAXTEMP * 100, 0, 255);  // move decimal point of colorTemp 2 places to the right, otherwise colors are only mapped to full degrees and not points
       colorIndex = constrain(colorIndex, 0, 255);
       //draw the pixels!
       uint16_t color;
