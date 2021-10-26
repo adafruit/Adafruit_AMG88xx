@@ -29,7 +29,7 @@
    #define TFT_CS   0
    #define TFT_DC   15
    #define SD_CS    2
-#elif defined(ESP32)
+#elif defined(ESP32) && !defined(ARDUINO_ADAFRUIT_FEATHER_ESP32S2)
    #define STMPE_CS 32
    #define TFT_CS   15
    #define TFT_DC   33
@@ -54,8 +54,8 @@
    #define TFT_CS   P5_3
    #define STMPE_CS P3_3
    #define SD_CS    P3_2
-#else
-  #define STMPE_CS 6
+#else // every other Feather (32u4, m0, m4, esp32s2, etc)
+   #define STMPE_CS 6
    #define TFT_CS   9
    #define TFT_DC   10
    #define SD_CS    5
@@ -109,28 +109,27 @@ uint16_t displayPixelWidth, displayPixelHeight;
 void setup() {
   delay(500);
   Serial.begin(9600);
-    Serial.println(F("AMG88xx thermal camera!"));
+  Serial.println(F("AMG88xx thermal camera!"));
 
-    tft.begin();
-    tft.fillScreen(ILI9341_BLACK);
+  tft.begin();
+  tft.fillScreen(ILI9341_BLACK);
 
-    displayPixelWidth = tft.width() / 8;
-    displayPixelHeight = tft.width() / 8; //Keep pixels square 
+  displayPixelWidth = tft.width() / 8;
+  displayPixelHeight = tft.width() / 8; //Keep pixels square 
 
-    tft.setRotation(0);
-    
-    bool status;
-    
-    // default settings
-    status = amg.begin();
-    if (!status) {
-        Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
-        while (1);
-    }
-    
-    Serial.println("-- Thermal Camera Test --");
-    delay(100); // let sensor boot up
-
+  tft.setRotation(0);
+  
+  bool status;
+  
+  // default settings
+  status = amg.begin();
+  if (!status) {
+      Serial.println("Could not find a valid AMG88xx sensor, check wiring!");
+      while (1);
+  }
+  
+  Serial.println("-- Thermal Camera Test --");
+  delay(100); // let sensor boot up
 }
 
 void loop() {
