@@ -145,7 +145,7 @@ void loop() {
     
     uint8_t colorIndex = map(colorTemp, MINTEMP, MAXTEMP, 0, 255);
     
-    colorIndex = constrain(colorIndex, 0, 255);
+    colorIndex = (uint8_t)constrain((int16_t)colorIndex, (int16_t)0, (int16_t)255);
     //draw the pixels!
     tft.fillRect(displayPixelHeight * floor(i / 8), 40 + displayPixelWidth * ((AMG88xx_PIXEL_ARRAY_SIZE - i - 1) % 8),
         displayPixelHeight, displayPixelWidth, camColors[colorIndex]);
