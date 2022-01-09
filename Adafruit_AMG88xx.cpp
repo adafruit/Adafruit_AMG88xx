@@ -171,7 +171,7 @@ float Adafruit_AMG88xx::readThermistor() {
 /*!
     @brief  Read Infrared sensor values
     @param  buf the array to place the pixels in
-    @param  size Optionsl number of bytes to read (up to 64). Default is 64
+    @param  size Optional number of bytes to read (up to 64). Default is 64
    bytes.
     @return up to 64 bytes of pixel data in buf
 */
