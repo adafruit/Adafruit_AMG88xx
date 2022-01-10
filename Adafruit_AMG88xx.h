@@ -74,7 +74,8 @@ public:
 
   bool begin(uint8_t addr = AMG88xx_ADDRESS, TwoWire *theWire = &Wire);
 
-  void readPixels(float *buf, uint8_t size = AMG88xx_PIXEL_ARRAY_SIZE);
+  void readPixelsRaw(uint8_t *buf, uint8_t pixels = AMG88xx_PIXEL_ARRAY_SIZE);
+  void readPixels(float *buf, uint8_t pixels = AMG88xx_PIXEL_ARRAY_SIZE);
   float readThermistor();
 
   void setMovingAverageMode(bool mode);

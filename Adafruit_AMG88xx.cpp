@@ -169,22 +169,38 @@ float Adafruit_AMG88xx::readThermistor() {
 
 /**************************************************************************/
 /*!
-    @brief  Read Infrared sensor values
+    @brief  Read Infrared sensor raw values
     @param  buf the array to place the pixels in
-    @param  size Optionsl number of bytes to read (up to 64). Default is 64
-   bytes.
-    @return up to 64 bytes of pixel data in buf
+    @param  pixels Optional number of pixels to read (up to 64). Default is
+   64 pixels. Each pixel value is 12 bits, so it is stored in 2 bytes of
+   the buf array,
+    @return up to 128 bytes of pixel data in buf
 */
 /**************************************************************************/
-void Adafruit_AMG88xx::readPixels(float *buf, uint8_t size) {
+void Adafruit_AMG88xx::readPixelsRaw(uint8_t *buf, uint8_t pixels) {
+  uint8_t bytesToRead =
+      min((uint8_t)(pixels << 1), (uint8_t)(AMG88xx_PIXEL_ARRAY_SIZE << 1));
+  this->read(AMG88xx_PIXEL_OFFSET, buf, bytesToRead);
+}
+
+/**************************************************************************/
+/*!
+    @brief  Read Infrared sensor values
+    @param  buf the array to place the pixels in
+    @param  pixels Optional number of pixels to read (up to 64). Default is
+   64 pixels.
+    @return up to 64 float values of pixel data in buf
+*/
+/**************************************************************************/
+void Adafruit_AMG88xx::readPixels(float *buf, uint8_t pixels) {
   uint16_t recast;
   float converted;
   uint8_t bytesToRead =
-      min((uint8_t)(size << 1), (uint8_t)(AMG88xx_PIXEL_ARRAY_SIZE << 1));
+      min((uint8_t)(pixels << 1), (uint8_t)(AMG88xx_PIXEL_ARRAY_SIZE << 1));
   uint8_t rawArray[bytesToRead];
   this->read(AMG88xx_PIXEL_OFFSET, rawArray, bytesToRead);
 
-  for (int i = 0; i < size; i++) {
+  for (int i = 0; i < pixels; i++) {
     uint8_t pos = i << 1;
     recast = ((uint16_t)rawArray[pos + 1] << 8) | ((uint16_t)rawArray[pos]);
 
