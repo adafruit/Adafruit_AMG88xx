@@ -77,9 +77,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afab9776ca718c6e82488d1bab4834a0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#afab9776ca718c6e82488d1bab4834a0f">begin</a> (uint8_t addr=AMG88xx_ADDRESS, TwoWire *theWire=&amp;Wire)</td></tr>
 <tr class="memdesc:afab9776ca718c6e82488d1bab4834a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setups the I2C interface and hardware.  <a href="#afab9776ca718c6e82488d1bab4834a0f">More...</a><br /></td></tr>
 <tr class="separator:afab9776ca718c6e82488d1bab4834a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a465430ad61264933c69d1587bcf847c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#a465430ad61264933c69d1587bcf847c1">readPixels</a> (float *buf, uint8_t size=AMG88xx_PIXEL_ARRAY_SIZE)</td></tr>
-<tr class="memdesc:a465430ad61264933c69d1587bcf847c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Infrared sensor values.  <a href="#a465430ad61264933c69d1587bcf847c1">More...</a><br /></td></tr>
-<tr class="separator:a465430ad61264933c69d1587bcf847c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a646772eb62521904626447ab0b2c5ad9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#a646772eb62521904626447ab0b2c5ad9">readPixelsRaw</a> (uint8_t *buf, uint8_t pixels=AMG88xx_PIXEL_ARRAY_SIZE)</td></tr>
+<tr class="memdesc:a646772eb62521904626447ab0b2c5ad9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Infrared sensor raw values.  <a href="#a646772eb62521904626447ab0b2c5ad9">More...</a><br /></td></tr>
+<tr class="separator:a646772eb62521904626447ab0b2c5ad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f79f1a9b1a1a8ae93c714e93cf7eaf0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#a9f79f1a9b1a1a8ae93c714e93cf7eaf0">readPixels</a> (float *buf, uint8_t pixels=AMG88xx_PIXEL_ARRAY_SIZE)</td></tr>
+<tr class="memdesc:a9f79f1a9b1a1a8ae93c714e93cf7eaf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Infrared sensor values.  <a href="#a9f79f1a9b1a1a8ae93c714e93cf7eaf0">More...</a><br /></td></tr>
+<tr class="separator:a9f79f1a9b1a1a8ae93c714e93cf7eaf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8f9d316451a8bfafc1fd38b579e613e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___a_m_g88xx.html#ad8f9d316451a8bfafc1fd38b579e613e">readThermistor</a> ()</td></tr>
 <tr class="memdesc:ad8f9d316451a8bfafc1fd38b579e613e"><td class="mdescLeft">&#160;</td><td class="mdescRight">read the onboard thermistor  <a href="#ad8f9d316451a8bfafc1fd38b579e613e">More...</a><br /></td></tr>
 <tr class="separator:ad8f9d316451a8bfafc1fd38b579e613e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,8 +155,46 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a465430ad61264933c69d1587bcf847c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a465430ad61264933c69d1587bcf847c1">&#9670;&nbsp;</a></span>readPixels()</h2>
+<a id="a646772eb62521904626447ab0b2c5ad9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a646772eb62521904626447ab0b2c5ad9">&#9670;&nbsp;</a></span>readPixelsRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adafruit_AMG88xx::readPixelsRaw </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>pixels</em> = <code>AMG88xx_PIXEL_ARRAY_SIZE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read Infrared sensor raw values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buf</td><td>the array to place the pixels in </td></tr>
+    <tr><td class="paramname">pixels</td><td>Optional number of pixels to read (up to 64). Default is 64 pixels. Each pixel value is 12 bits, so it is stored in 2 bytes of the buf array, </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>up to 128 bytes of pixel data in buf </dd></dl>
+
+</div>
+</div>
+<a id="a9f79f1a9b1a1a8ae93c714e93cf7eaf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f79f1a9b1a1a8ae93c714e93cf7eaf0">&#9670;&nbsp;</a></span>readPixels()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,7 +209,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>size</em> = <code>AMG88xx_PIXEL_ARRAY_SIZE</code>&#160;</td>
+          <td class="paramname"><em>pixels</em> = <code>AMG88xx_PIXEL_ARRAY_SIZE</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -182,11 +223,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buf</td><td>the array to place the pixels in </td></tr>
-    <tr><td class="paramname">size</td><td>Optionsl number of bytes to read (up to 64). Default is 64 bytes. </td></tr>
+    <tr><td class="paramname">pixels</td><td>Optional number of pixels to read (up to 64). Default is 64 pixels. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>up to 64 bytes of pixel data in buf </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>up to 64 float values of pixel data in buf </dd></dl>
 
 </div>
 </div>
