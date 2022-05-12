@@ -77,21 +77,21 @@ void Adafruit_AMG88xx::setInterruptLevels(float high, float low,
   int highConv = high / AMG88xx_PIXEL_TEMP_CONVERSION;
   highConv = constrain(highConv, -4095, 4095);
   _inthl.INT_LVL_H = highConv & 0xFF;
-  _inthh.INT_LVL_H = (highConv & 0xF) >> 4;
+  _inthh.INT_LVL_H = (highConv & 0x0F00) >> 8;
   this->write8(AMG88xx_INTHL, _inthl.get());
   this->write8(AMG88xx_INTHH, _inthh.get());
 
   int lowConv = low / AMG88xx_PIXEL_TEMP_CONVERSION;
   lowConv = constrain(lowConv, -4095, 4095);
   _intll.INT_LVL_L = lowConv & 0xFF;
-  _intlh.INT_LVL_L = (lowConv & 0xF) >> 4;
+  _intlh.INT_LVL_L = (lowConv & 0x0F00) >> 8;
   this->write8(AMG88xx_INTLL, _intll.get());
   this->write8(AMG88xx_INTLH, _intlh.get());
 
   int hysConv = hysteresis / AMG88xx_PIXEL_TEMP_CONVERSION;
   hysConv = constrain(hysConv, -4095, 4095);
   _ihysl.INT_HYS = hysConv & 0xFF;
-  _ihysh.INT_HYS = (hysConv & 0xF) >> 4;
+  _ihysh.INT_HYS = (hysConv & 0x0F00) >> 8;
   this->write8(AMG88xx_IHYSL, _ihysl.get());
   this->write8(AMG88xx_IHYSH, _ihysh.get());
 }
