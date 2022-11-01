@@ -176,8 +176,7 @@ void drawpixels(float *p, uint8_t rows, uint8_t cols, uint8_t boxWidth, uint8_t 
       uint8_t colorIndex = map(colorTemp, MINTEMP, MAXTEMP, 0, 255);
       colorIndex = (uint8_t)constrain((int16_t)colorIndex, (int16_t)0, (int16_t)255);
       //draw the pixels!
-      uint16_t color;
-      color = val * 2;
+      //uint16_t color = val * 2;
       tft.fillRect(40+boxWidth * x, boxHeight * y, boxWidth, boxHeight, camColors[colorIndex]);
         
       if (showVal) {

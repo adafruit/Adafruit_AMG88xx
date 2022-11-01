@@ -112,7 +112,6 @@ void get_adjacents_2d(float *src, float *dest, uint8_t rows, uint8_t cols,
                       int8_t x, int8_t y) {
   // Serial.print("("); Serial.print(x); Serial.print(", "); Serial.print(y);
   // Serial.println(")");
-  float arr[4];
   for (int8_t delta_y = -1; delta_y < 3; delta_y++) { // -1, 0, 1, 2
     float *row = dest + 4 * (delta_y + 1); // index into each chunk of 4
     for (int8_t delta_x = -1; delta_x < 3; delta_x++) { // -1, 0, 1, 2
